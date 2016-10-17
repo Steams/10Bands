@@ -1,114 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.steams.a10bands.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:grid="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.steams.a10bands.MainActivity">
+    android:fillViewport="true">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/status_container"
-        android:layout_width="0dp"
-        grid:cardBackgroundColor="@color/cardview_light_background"
-        android:layout_height="160dp"
-        grid:layout_constraintTop_toTopOf="parent"
-        grid:layout_constraintRight_toRightOf="parent"
-        grid:layout_constraintLeft_toLeftOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:paddingLeft="25dp"
-            android:orientation="vertical"
+        <android.support.v7.widget.CardView
+            android:id="@+id/status_container"
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="Funds Status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/status_header"
-                android:textAlignment="center"
-                android:textSize="15dp"
-                />
-
-            <TextView
-                android:text="Available"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:id="@+id/mainfunds_label" />
-
-            <TextView
-                android:text="$65700"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:id="@+id/available_funds" />
+            grid:cardBackgroundColor="@color/cardview_light_background"
+            android:layout_height="150dp"
+            >
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:paddingLeft="25dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:paddingTop="10dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="Free Funds"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/smallFundsLabel"/>
-                <TextView
-                    android:text="Balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/smallFundsLabel"/>
-                <TextView
-                    android:text="Savings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/smallFundsLabel"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:text="$32 560"
-                    android:layout_width="wrap_content"
+                    android:text="Funds Status"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/smallFundsValue"/>
+                    android:id="@+id/status_header"
+                    android:textAlignment="center"
+                    android:textSize="15dp"
+                    />
+
                 <TextView
-                    android:text="$93 000"
-                    android:layout_width="wrap_content"
+                    android:text="Available"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/smallFundsValue"/>
+                    android:textSize="15dp"
+                    android:id="@+id/mainfunds_label" />
+
                 <TextView
-                    android:text="$84 000"
-                    android:layout_width="wrap_content"
+                    android:text="$65700"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/smallFundsValue"/>
+                    android:textSize="30dp"
+                    android:id="@+id/available_funds" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:paddingTop="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Free Funds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/smallFundsLabel"/>
+                    <TextView
+                        android:text="Balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/smallFundsLabel"/>
+                    <TextView
+                        android:text="Savings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/smallFundsLabel"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="$32 560"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/smallFundsValue"/>
+                    <TextView
+                        android:text="$93 000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/smallFundsValue"/>
+                    <TextView
+                        android:text="$84 000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/smallFundsValue"/>
+                </LinearLayout>
             </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/budgets_container"
+            style="@style/categoryContainer"
+            >
+
+            <TextView
+                android:text="Budgets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/categoryLabel"
+                android:id="@+id/budgets_label" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scrollbars="none"
+                android:id="@+id/budgets_list" />
+
+            <Button
+                android:text="+"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/button2"
+                android:layout_gravity="end" />
+
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:id="@+id/bills_container"
+            style="@style/categoryContainer"
+            >
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="393dp"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        grid:layout_constraintTop_toBottomOf="@+id/status_container"
-        tools:layout_editor_absoluteX="0dp">
+            <TextView
+                android:text="Bills"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/categoryLabel"
+                android:id="@+id/bills_label" />
 
-        <TextView
-            android:text="Budgets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/categoryLabel"
-            android:id="@+id/budgets_label" />
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scrollbars="none"
+                android:id="@+id/bills_list" />
+
+            <Button
+                android:text="+"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/bills_addButton"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buckets_container"
+            style="@style/categoryContainer"
+            >
+
+            <TextView
+                android:text="Buckets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/categoryLabel"
+                android:id="@+id/buckets_label" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scrollbars="none"
+                android:id="@+id/buckets_list" />
+
+            <Button
+                android:text="+"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/buckets_addButton"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/goals_container"
+            style="@style/categoryContainer"
+            >
+
+            <TextView
+                android:text="Goals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/categoryLabel"
+                android:id="@+id/goals_label" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scrollbars="none"
+                android:id="@+id/goals_list" />
+
+            <Button
+                android:text="+"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/goals_addButton"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>
