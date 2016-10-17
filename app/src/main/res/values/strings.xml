@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">10Bands</string>
+    <string name="free_funds_label">Free Funds</string>
+    <string name="available_funds_label">Available</string>
+    <string name="total_funds_label">Total</string>
+    <string name="savings_label">Savings</string>
 </resources>
