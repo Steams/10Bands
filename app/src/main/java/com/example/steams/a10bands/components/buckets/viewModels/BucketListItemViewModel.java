@@ -1,39 +1,35 @@
-package com.example.steams.a10bands.viewModels;
+package com.example.steams.a10bands.components.buckets.viewModels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.example.steams.a10bands.BR;
-import com.example.steams.a10bands.models.Bill;
+import com.example.steams.a10bands.components.buckets.Bucket;
 import com.example.steams.a10bands.utils.CurrencyService;
 
+
 /**
- * Created by steams on 10/23/16.
+ * Created by steams on 10/21/16.
  */
 
-public class BillsListItemViewModel extends BaseObservable {
+public class BucketListItemViewModel extends BaseObservable{
     public String name;
     public String value;
 
-    public BillsListItemViewModel(Bill bill){
-        name = bill.name;
-        value = CurrencyService.makeString(bill.value);
+    public BucketListItemViewModel(Bucket budget){
+        name = budget.name;
+        value = CurrencyService.makeString(budget.value);
     }
 
-    public void setModel(Bill bill){
-        name = bill.name;
-        value = CurrencyService.makeString(bill.value);
+    public void setModel(Bucket budget){
+        name = budget.name;
+        value = CurrencyService.makeString(budget.value);
         notifyPropertyChanged(BR._all);
     }
 
     public void setValue(double value){
         this.value = CurrencyService.makeString(value);
         notifyPropertyChanged(BR.value);
-    }
-
-    public void setName(String name){
-        this.name = name;
-        notifyPropertyChanged(BR.name);
     }
 
     @Bindable
@@ -45,5 +41,4 @@ public class BillsListItemViewModel extends BaseObservable {
     public String getValue(){
         return this.value;
     }
-
 }

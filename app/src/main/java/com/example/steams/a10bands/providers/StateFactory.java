@@ -3,17 +3,17 @@ package com.example.steams.a10bands.providers;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 
-import com.example.steams.a10bands.models.Bill;
-import com.example.steams.a10bands.models.Bucket;
+import com.example.steams.a10bands.components.bills.models.Bill;
+import com.example.steams.a10bands.components.buckets.Bucket;
 import com.example.steams.a10bands.components.budgets.models.Budget;
 import com.example.steams.a10bands.models.FundsStatus;
-import com.example.steams.a10bands.models.Goal;
+import com.example.steams.a10bands.components.goals.models.Goal;
 import com.example.steams.a10bands.models.IncomeModel;
-import com.example.steams.a10bands.viewModels.BillsListItemViewModel;
-import com.example.steams.a10bands.viewModels.BucketListItemViewModel;
+import com.example.steams.a10bands.components.bills.viewModels.BillsListItemViewModel;
+import com.example.steams.a10bands.components.buckets.viewModels.BucketListItemViewModel;
 import com.example.steams.a10bands.components.budgets.viewModels.BudgetListItemViewModel;
 import com.example.steams.a10bands.viewModels.FundsStatusViewModel;
-import com.example.steams.a10bands.viewModels.GoalsListItemViewModel;
+import com.example.steams.a10bands.components.goals.viewModels.GoalsListItemViewModel;
 
 import java.util.HashMap;
 import java.util.Map;

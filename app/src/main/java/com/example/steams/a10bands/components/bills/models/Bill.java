@@ -1,10 +1,12 @@
-package com.example.steams.a10bands.models;
+package com.example.steams.a10bands.components.bills.models;
+
+import com.example.steams.a10bands.models.Expense;
 
 /**
  * Created by steams on 10/17/16.
  */
 
-public class Bill extends Expense{
+public class Bill extends Expense {
     public boolean isPaid;
     public double refreshValue;
 

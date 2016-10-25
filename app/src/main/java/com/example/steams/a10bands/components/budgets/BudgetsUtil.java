@@ -24,7 +24,7 @@ import com.example.steams.a10bands.providers.StateFactory;
 
 public class BudgetsUtil {
 
-    public static void setupBudgets(final Activity context){
+    public static void setupBudgetsListUI(final Activity context){
         final StateFactory stateFactory = StateFactory.getInstance();
 
         LinearLayout budgets_container;

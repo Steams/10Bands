@@ -1,10 +1,10 @@
-package com.example.steams.a10bands.viewModels;
+package com.example.steams.a10bands.components.goals.viewModels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.example.steams.a10bands.BR;
-import com.example.steams.a10bands.models.Goal;
+import com.example.steams.a10bands.components.goals.models.Goal;
 import com.example.steams.a10bands.utils.CurrencyService;
 
 /**

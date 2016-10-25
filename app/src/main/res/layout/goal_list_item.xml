@@ -3,7 +3,7 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
     >
 <data>
-    <variable name="goal" type="com.example.steams.a10bands.viewModels.GoalsListItemViewModel"></variable>
+    <variable name="goal" type="com.example.steams.a10bands.components.goals.viewModels.GoalsListItemViewModel"></variable>
 </data>
 
 <RelativeLayout

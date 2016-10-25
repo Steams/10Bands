@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <data>
-        <variable name="bill" type="com.example.steams.a10bands.viewModels.BillsListItemViewModel"></variable>
+        <variable name="bill" type="com.example.steams.a10bands.components.bills.viewModels.BillsListItemViewModel"></variable>
     </data>
 
     <RelativeLayout
