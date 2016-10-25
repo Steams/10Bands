@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable name="FundsStatusVM" type="com.example.steams.a10bands.viewModels.FundsStatusViewModel"></variable>
+    </data>
+    <android.support.v7.widget.CardView
+        android:id="@+id/status_container"
+        android:layout_width="match_parent"
+        grid:cardBackgroundColor="@color/cardview_light_background"
+        android:layout_height="170dp">
+
+
+        <LinearLayout
+            android:paddingLeft="25dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="Funds Status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/status_header"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                />
+
+            <TextView
+                android:text="Available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:id="@+id/mainfunds_label" />
+
+            <TextView
+                android:text="@{FundsStatusVM.available}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:id="@+id/available_funds" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingTop="10dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Free Funds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/smallFundsLabel"/>
+                <TextView
+                    android:text="Balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/smallFundsLabel"/>
+                <TextView
+                    android:text="Savings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/smallFundsLabel"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="@{FundsStatusVM.free}"
+                    android:id="@+id/free_funds_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/smallFundsValue"/>
+                <TextView
+                    android:text="@{FundsStatusVM.balance}"
+                    android:id="@+id/balance_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/smallFundsValue"/>
+                <TextView
+                    android:text="@{FundsStatusVM.savings}"
+                    android:id="@+id/savings_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/smallFundsValue"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>
