@@ -8,9 +8,19 @@ import com.example.steams.a10bands.models.Expense;
 
 public class Goal extends Expense {
     public double target;
+    private GoalState state;
 
     public Goal(String name, double target){
         super(name);
         this.target = target;
+    }
+
+    public Goal(GoalState state ){
+        super(state.name,state.value);
+        this.state = state;
+    }
+
+    public void persistState(){
+        state.update(this);
     }
 }

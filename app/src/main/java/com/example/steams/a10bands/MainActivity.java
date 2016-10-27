@@ -3,6 +3,7 @@ package com.example.steams.a10bands;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import com.example.steams.a10bands.components.bills.BillsUtil;
 import com.example.steams.a10bands.components.buckets.BucketsUtil;
 import com.example.steams.a10bands.components.budgets.BudgetsUtil;
 import com.example.steams.a10bands.components.goals.GoalsUtil;
+import com.example.steams.a10bands.components.transactions.TransactionsUtil;
 import com.example.steams.a10bands.databinding.ActivityMainBinding;
 import com.example.steams.a10bands.databinding.GoalListItemBinding;
 import com.example.steams.a10bands.components.goals.models.Goal;
@@ -32,11 +34,11 @@ import com.example.steams.a10bands.components.goals.viewModels.GoalsListItemView
 
 import java.util.List;
 
+import io.realm.Realm;
+
 public class MainActivity extends AppCompatActivity {
 
-
-
-    private StateFactory stateFactory;
+    private StateFactory stateFactory ;
 
     AlertDialog.Builder alertBuilder;
 
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        stateFactory  = StateFactory.getInstance();
+        Realm.init(this);
+        stateFactory = StateFactory.getInstance();
+
         alertBuilder  = new AlertDialog.Builder(this);
 
         ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
@@ -66,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
         switch ( item.getItemId() ){
             case R.id.menu_add_income:
                 stateFactory.injectIncome();
+                return true;
+            case R.id.menu_transfer:
+                TransactionsUtil.launchTransferFundsDialog(this);
+                return true;
+            case R.id.menu_view_transactions:
+                Intent i = new Intent(this, TransactionsActivity.class);
+                startActivity(i);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -23,7 +23,7 @@
             android:id="@+id/budget_name" />
 
         <TextView
-            android:text="@{budget.value}"
+            android:text="@{budget.value + ' ' +'/' + ' ' + budget.refreshValue}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/budget_name"

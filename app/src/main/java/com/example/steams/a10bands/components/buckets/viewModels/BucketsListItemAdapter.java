@@ -1,5 +1,6 @@
 package com.example.steams.a10bands.components.buckets.viewModels;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.example.steams.a10bands.R;
+import com.example.steams.a10bands.components.transactions.TransactionsUtil;
 import com.example.steams.a10bands.databinding.BucketListItemBinding;
 import com.example.steams.a10bands.providers.StateFactory;
 
@@ -28,14 +30,16 @@ public class BucketsListItemAdapter extends ArrayAdapter<BucketListItemViewModel
     @NonNull
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        BucketListItemBinding binding;
+        final BucketListItemBinding binding;
 
         binding = BucketListItemBinding.inflate(LayoutInflater.from(getContext()),parent, false);
         convertView = binding.getRoot();
-        Button button = (Button) convertView.findViewById(R.id.bucket_list_item_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button makeTransactionButton = (Button) convertView.findViewById(R.id.bucket_list_item_button);
+
+        makeTransactionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TransactionsUtil.launchCreateTransactionDialog((Activity)getContext(),binding.getBucket().getName(),"Bucket");
             }
         });
 

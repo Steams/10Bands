@@ -17,4 +17,16 @@ public class Expense {
         this.name = name;
         this.value = value;
     }
+
+    public boolean withdraw(double amount){
+        if(value < amount){
+            return false;
+        }
+        value -= amount;
+        return true;
+    }
+
+    public void deposit(double amount){
+        value += amount;
+    }
 }

@@ -3,7 +3,7 @@ package com.example.steams.a10bands.viewModels;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-import com.android.databinding.library.baseAdapters.BR;
+import com.example.steams.a10bands.BR;
 import com.example.steams.a10bands.models.FundsStatus;
 import com.example.steams.a10bands.utils.CurrencyService;
 

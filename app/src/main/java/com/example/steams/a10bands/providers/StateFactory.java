@@ -2,10 +2,19 @@ package com.example.steams.a10bands.providers;
 
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.util.Log;
 
 import com.example.steams.a10bands.components.bills.models.Bill;
+import com.example.steams.a10bands.components.bills.models.BillState;
 import com.example.steams.a10bands.components.buckets.Bucket;
+import com.example.steams.a10bands.components.buckets.BucketState;
 import com.example.steams.a10bands.components.budgets.models.Budget;
+import com.example.steams.a10bands.components.budgets.models.BudgetState;
+import com.example.steams.a10bands.components.goals.models.GoalState;
+import com.example.steams.a10bands.components.transactions.Transaction;
+import com.example.steams.a10bands.components.transactions.TransactionState;
+import com.example.steams.a10bands.components.transactions.viewModels.TransactionsListItemViewModel;
+import com.example.steams.a10bands.models.Expense;
 import com.example.steams.a10bands.models.FundsStatus;
 import com.example.steams.a10bands.components.goals.models.Goal;
 import com.example.steams.a10bands.models.IncomeModel;
@@ -15,8 +24,13 @@ import com.example.steams.a10bands.components.budgets.viewModels.BudgetListItemV
 import com.example.steams.a10bands.viewModels.FundsStatusViewModel;
 import com.example.steams.a10bands.components.goals.viewModels.GoalsListItemViewModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by steams on 10/18/16.
@@ -25,6 +39,8 @@ import java.util.Map;
 public class StateFactory {
 
     private static StateFactory instance = null;
+
+    public Realm realm;
 
     private double currentFunds = 0;
     private double income = 0;
@@ -44,16 +60,54 @@ public class StateFactory {
     public ObservableList<GoalsListItemViewModel> goalsViewModels = new ObservableArrayList<>();
     public ObservableList<BillsListItemViewModel> billsViewModels = new ObservableArrayList<>();
 
+    private List<Transaction> transactionList = new ArrayList<>();
+    public ObservableList<TransactionsListItemViewModel> transactionsViewModels = new ObservableArrayList<>();
+
+    private Map<String,String> expendituresToClass = new HashMap<>();
+
 
     private StateFactory(){
-        buckets.put("Free Funds",new Bucket("Free Funds"));
-        buckets.put("Savings",new Bucket("Savings"));
-        bucketViewModels.add(new BucketListItemViewModel(buckets.get("Free Funds")));
-        bucketViewModels.add(new BucketListItemViewModel(buckets.get("Savings")));
+        realm = Realm.getDefaultInstance();
+//        clearDB();
+        RealmResults<BudgetState> budgetStates = realm.where(BudgetState.class).findAll();
+        for(BudgetState b : budgetStates){
+            budgets.put(b.name,b.toBudget());
+            budgetViewModels.add(new BudgetListItemViewModel(budgets.get(b.name)));
+        }
 
-        updateFundsStatus();
+        RealmResults<BucketState> bucketStates = realm.where(BucketState.class).findAll();
+        if(bucketStates.size() == 0){
+            addBucket(new Bucket("Free Funds"));
+            addBucket(new Bucket("Savings"));
+        } else {
+            for(BucketState b : bucketStates){
+                buckets.put(b.name,b.toBucket());
+                bucketViewModels.add(new BucketListItemViewModel(buckets.get(b.name)));
+            }
+        }
+
+        RealmResults<BillState> billStates = realm.where(BillState.class).findAll();
+        for(BillState b : billStates){
+            bills.put(b.name,b.toBill());
+            billsViewModels.add(new BillsListItemViewModel(bills.get(b.name)));
+        }
+
+        RealmResults<GoalState> goalStates = realm.where(GoalState.class).findAll();
+        for(GoalState b : goalStates){
+            goals.put(b.name,b.toGoal());
+            goalsViewModels.add(new GoalsListItemViewModel(goals.get(b.name)));
+        }
+
+        RealmResults<TransactionState> transactionStates = realm.where(TransactionState.class).findAll();
+        for(TransactionState b : transactionStates){
+            transactionList.add(b.toTransaction());
+            transactionsViewModels.add(new TransactionsListItemViewModel(b.toTransaction()));
+        }
+
         fundsStatusViewModel.setModel(fundsStatus);
+        updateFundsStatus();
     }
+
 
     public static StateFactory getInstance(){
         if(instance ==null){
@@ -74,11 +128,11 @@ public class StateFactory {
         if(fundsRemaining > billsTotal){
             for(Bill x : bills.values()){
                 fundsRemaining = x.refresh(fundsRemaining);
-                updateBillVM(x);
+                updateBillState(x);
             }
         } else {
             buckets.get("Free Funds").value += fundsRemaining;
-            updateBucketVM(buckets.get("Free Funds"));
+            updateBucketState(buckets.get("Free Funds"));
         }
 
         //refresh all budgets
@@ -90,12 +144,12 @@ public class StateFactory {
         if(fundsRemaining > budgetsTotal){
             for(Budget x : budgets.values()){
                 fundsRemaining = x.refresh(fundsRemaining);
-                updateBudgetVM(x);
+                updateBudgetState(x);
             }
         }
 
         buckets.get("Free Funds").value += fundsRemaining;
-        updateBucketVM(buckets.get("Free Funds"));
+        updateBucketState(buckets.get("Free Funds"));
 
         updateFundsStatus();
     }
@@ -116,7 +170,9 @@ public class StateFactory {
         }
 
         for (Bucket x : buckets.values()){
-            available += x.value;
+            if(!x.name.equals("Savings")){
+                available += x.value;
+            }
         }
 
         for (Goal x : goals.values()){
@@ -140,54 +196,234 @@ public class StateFactory {
 
     public void addBudget(Budget budget){
         if(budgets.get(budget.name) ==null){
-            budgets.put(budget.name,budget);
+            realm.beginTransaction();
+
+                BudgetState state = realm.createObject(BudgetState.class);
+                state.name = budget.name;
+                state.refreshValue = budget.refreshValue;
+                state.value = budget.value;
+
+            realm.commitTransaction();
+
+            budgets.put(budget.name,state.toBudget());
             budgetViewModels.add( new BudgetListItemViewModel(budget));
         }
     }
 
     public void addBucket(Bucket bucket){
         if(buckets.get(bucket.name) ==null){
-            buckets.put(bucket.name,bucket);
+
+            realm.beginTransaction();
+
+                BucketState state = realm.createObject(BucketState.class);
+                state.name = bucket.name;
+                state.value = bucket.value;
+
+            realm.commitTransaction();
+
+            buckets.put(bucket.name,state.toBucket());
             bucketViewModels.add( new BucketListItemViewModel(bucket));
         }
     }
 
     public void addBill(Bill bill){
         if(bills.get(bill.name) ==null){
-            bills.put(bill.name,bill);
+
+            realm.beginTransaction();
+
+                BillState state = realm.createObject(BillState.class);
+                state.name = bill.name;
+                state.value = bill.value;
+                state.isPaid = bill.isPaid;
+
+            realm.commitTransaction();
+
+            bills.put(bill.name,state.toBill());
             billsViewModels.add( new BillsListItemViewModel(bill));
         }
     }
 
     public void addGoal(Goal goal){
         if(goals.get(goal.name) ==null){
-            goals.put(goal.name,goal);
+
+            realm.beginTransaction();
+
+                GoalState state = realm.createObject(GoalState.class);
+                state.name = goal.name;
+                state.value = goal.value;
+
+            realm.commitTransaction();
+
+            goals.put(goal.name,state.toGoal());
             goalsViewModels.add( new GoalsListItemViewModel(goal));
         }
     }
 
-    private void updateBucketVM(Bucket b){
+    private void updateBucketState(Bucket b){
         for(BucketListItemViewModel x : bucketViewModels){
             if(x.getName().equals(b.name)){
                 x.setValue(b.value);
             }
         }
+        b.persistState();
     }
 
-    private void updateBudgetVM(Budget b){
+    private void updateBudgetState(Budget b){
         for(BudgetListItemViewModel x : budgetViewModels){
             if(x.getName().equals(b.name)){
                 x.setValue(b.value);
             }
         }
+        b.persistState();
     }
 
-    private void updateBillVM(Bill b){
+    private void updateBillState(Bill b){
         for(BillsListItemViewModel x : billsViewModels){
             if(x.getName().equals(b.name)){
                 x.setValue(b.value);
             }
         }
+        b.persistState();
     }
 
+    private void updateGoalState(Goal b){
+        for(GoalsListItemViewModel x : goalsViewModels){
+            if(x.getName().equals(b.name)){
+                x.setValue(b.value);
+            }
+        }
+        b.persistState();
+    }
+
+    public void makeTransaction(Transaction t, String type){
+        switch (type){
+            case "Budget":
+                Budget budget = budgets.get(t.source);
+                if(budget.fulfillTransaction(t)){
+                    transactionList.add(t);
+                    transactionsViewModels.add(new TransactionsListItemViewModel(t));
+                    updateBudgetState(budget);
+                    updateFundsStatus();
+                }
+                break;
+            case "Bucket":
+                Bucket bucket = buckets.get(t.source);
+                if(bucket.fulfillTransaction(t)){
+                    transactionList.add(t);
+                    transactionsViewModels.add(new TransactionsListItemViewModel(t));
+                    updateBucketState(bucket);
+                    updateFundsStatus();
+                }
+                break;
+        }
+        realm.beginTransaction();
+            TransactionState state = realm.createObject(TransactionState.class);
+            state.category = t.category;
+            state.value = t.value;
+            state.description = t.description;
+            state.source = t.source;
+        realm.commitTransaction();
+    }
+
+    public List<String> getExpendituresList(){
+        for(Bucket b : buckets.values()){
+            expendituresToClass.put(b.name,"Bucket");
+        }
+
+        for(Budget b : budgets.values()){
+            expendituresToClass.put(b.name,"Budget");
+        }
+
+        for(Bill b : bills.values()){
+            expendituresToClass.put(b.name,"Bill");
+        }
+
+        for(Goal b : goals.values()){
+            expendituresToClass.put(b.name,"Goal");
+        }
+
+        return new ArrayList<>(expendituresToClass.keySet());
+    }
+
+    public boolean transferFunds(String from, String to, double amount) {
+        String fromClass = expendituresToClass.get(from);
+        String toClass = expendituresToClass.get(to);
+
+        Expense fromModel = null;
+        Expense toModel = null;
+
+        Log.d("DEBUG", "transferFunds: from : " + from + " to : " + to);
+
+        switch (fromClass){
+            case "Bucket":
+                fromModel = buckets.get(from);
+                break;
+            case "Budget":
+                fromModel = budgets.get(from);
+                break;
+            case "Bill":
+                fromModel = bills.get(from);
+                break;
+            case "Goal":
+                fromModel = goals.get(from);
+                break;
+        }
+
+        if(fromModel.value < amount){
+            return false;
+        }
+
+        switch (toClass){
+            case "Bucket":
+                toModel = buckets.get(to);
+                break;
+            case "Budget":
+                toModel = budgets.get(to);
+                break;
+            case "Bill":
+                toModel = bills.get(to);
+                break;
+            case "Goal":
+                toModel = goals.get(to);
+                break;
+        }
+
+        fromModel.withdraw(amount);
+        toModel.deposit(amount);
+
+        updateExpense(fromModel,fromClass);
+        updateExpense(toModel,toClass);
+
+        updateFundsStatus();
+        return true;
+    }
+
+    public void updateExpense(Expense x, String type){
+        switch (type){
+            case "Bucket":
+                updateBucketState((Bucket)x);
+                break;
+            case "Budget":
+                updateBudgetState((Budget)x);
+                break;
+            case "Bill":
+                updateBillState((Bill)x);
+                break;
+            case "Goal":
+                updateGoalState((Goal)x);
+                break;
+        }
+    }
+
+    public void clearDB(){
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.delete(BudgetState.class);
+                realm.close();
+                realm.deleteAll();
+                realm.deleteRealm(realm.getConfiguration());
+            }
+        });
+    }
 }

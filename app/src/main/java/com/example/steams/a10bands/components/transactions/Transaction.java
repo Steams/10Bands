@@ -1,4 +1,4 @@
-package com.example.steams.a10bands.models;
+package com.example.steams.a10bands.components.transactions;
 
 
 public class Transaction {
@@ -12,5 +12,12 @@ public class Transaction {
         this.description = description;
         this.value = value;
         this.category = category;
+    }
+
+    public Transaction(TransactionState state){
+        source = state.source;
+        value = state.value;
+        description = state.description;
+        category = state.category;
     }
 }

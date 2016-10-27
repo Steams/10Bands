@@ -33,4 +33,10 @@
       app:showAsAction="never"
       />
 
+    <item
+        android:id="@+id/menu_view_transactions"
+        android:title="View Transactions "
+        app:showAsAction="ifRoom"
+        />
+
 </menu>

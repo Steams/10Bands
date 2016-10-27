@@ -1,5 +1,6 @@
 package com.example.steams.a10bands.components.buckets;
 
+import com.example.steams.a10bands.components.transactions.Transaction;
 import com.example.steams.a10bands.models.Expense;
 
 /**
@@ -7,8 +8,26 @@ import com.example.steams.a10bands.models.Expense;
  */
 
 public class Bucket extends Expense {
+    private BucketState state;
 
     public Bucket(String name){
         super(name);
+    }
+
+    public boolean fulfillTransaction(Transaction t){
+        if(this.value > t.value){
+            this.value -= t.value;
+            return true;
+        }
+        return false;
+    }
+
+    public Bucket(BucketState state){
+        super(state.name,state.value);
+        this.state = state;
+    }
+
+    public void persistState(){
+        state.update(this);
     }
 }
