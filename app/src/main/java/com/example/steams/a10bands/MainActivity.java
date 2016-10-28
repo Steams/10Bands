@@ -74,10 +74,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_transfer:
                 TransactionsUtil.launchTransferFundsDialog(this);
                 return true;
+            case R.id.menu_set_value:
+                TransactionsUtil.launchSetModelValueDialog(this);
+                return true;
             case R.id.menu_view_transactions:
                 Intent i = new Intent(this, TransactionsActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.menu_delete_db:
+                stateFactory.clearDB();
         }
         return super.onOptionsItemSelected(item);
     }

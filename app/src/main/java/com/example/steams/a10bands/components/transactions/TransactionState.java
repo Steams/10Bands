@@ -11,6 +11,7 @@ public class TransactionState extends RealmObject{
     public double value;
     public String description;
     public String category;
+    public String date;
 
     public TransactionState(){}
 

@@ -16,13 +16,14 @@ public class TransactionsListItemViewModel extends BaseObservable {
     private String value;
     private String description;
     private String category;
-    private String dateTime;
+    private String date;
 
     public TransactionsListItemViewModel(Transaction t){
         setValue(t.value);
         setCategory(t.category);
         setSource(t.source);
         setDescription(t.description);
+        setDate(t.date);
     }
 
     @Bindable
@@ -64,12 +65,12 @@ public class TransactionsListItemViewModel extends BaseObservable {
     }
 
     @Bindable
-    public String getDateTime() {
-        return dateTime;
+    public String getDate() {
+        return date;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-        notifyPropertyChanged(BR.dateTime);
+    public void setDate(String date) {
+        this.date = date;
+        notifyPropertyChanged(BR.date);
     }
 }

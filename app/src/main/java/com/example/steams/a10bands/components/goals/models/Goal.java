@@ -18,6 +18,7 @@ public class Goal extends Expense {
     public Goal(GoalState state ){
         super(state.name,state.value);
         this.state = state;
+        this.target = state.target;
     }
 
     public void persistState(){

@@ -12,6 +12,7 @@ import io.realm.annotations.Ignore;
 public class GoalState extends RealmObject {
     public String name;
     public double value;
+    public double target;
 
     public Goal toGoal(){
         return new Goal(this);

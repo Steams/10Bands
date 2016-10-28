@@ -96,4 +96,43 @@ public class TransactionsUtil {
                 });
         alertBuilder.show();
     }
+
+    public static void launchSetModelValueDialog(Activity context) {
+
+        final StateFactory stateFactory = StateFactory.getInstance();
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View set_model_value_container = inflater.inflate(R.layout.set_model_value_dialog,null);
+
+        Spinner model_spinner = (Spinner)set_model_value_container.findViewById(R.id.set_model_value_model);
+
+        List<String> expenditures = stateFactory.getExpendituresList();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,expenditures);
+
+        model_spinner.setAdapter(adapter);
+
+        alertBuilder
+                .setTitle("Set Model Value")
+                .setView(set_model_value_container)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Dialog d = (Dialog) dialog;
+                        Spinner model;
+                        EditText amount;
+
+                        model = (Spinner) d.findViewById(R.id.set_model_value_model);
+                        amount = (EditText) d.findViewById(R.id.set_model_value_value);
+
+                        stateFactory.setModelValue(
+                                model.getSelectedItem().toString(),
+                                Double.parseDouble(amount.getText().toString())
+                        );
+                    }
+                });
+        alertBuilder.show();
+    }
 }

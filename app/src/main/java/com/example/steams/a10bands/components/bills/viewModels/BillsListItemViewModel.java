@@ -14,36 +14,53 @@ import com.example.steams.a10bands.utils.CurrencyService;
 public class BillsListItemViewModel extends BaseObservable {
     public String name;
     public String value;
+    public String refreshValue;
 
-    public BillsListItemViewModel(Bill bill){
+    public BillsListItemViewModel(Bill bill) {
         name = bill.name;
-        value = CurrencyService.makeString(bill.value);
+        setValue(bill.value);
+        refreshValue = CurrencyService.makeString(bill.refreshValue);
     }
 
-    public void setModel(Bill bill){
+    public void setModel(Bill bill) {
         name = bill.name;
-        value = CurrencyService.makeString(bill.value);
+        setValue(bill.value);
+        refreshValue = CurrencyService.makeString(bill.refreshValue);
         notifyPropertyChanged(BR._all);
     }
 
-    public void setValue(double value){
-        this.value = CurrencyService.makeString(value);
+    public void setValue(double value) {
+        if(value > 0){
+            this.value = CurrencyService.makeString(value);
+        } else {
+            this.value = "paid";
+        }
         notifyPropertyChanged(BR.value);
     }
 
-    public void setName(String name){
+    public void setrefreshValue(double value) {
+        this.refreshValue = CurrencyService.makeString(value);
+        notifyPropertyChanged(BR.refreshValue);
+    }
+
+    public void setName(String name) {
         this.name = name;
         notifyPropertyChanged(BR.name);
     }
 
+
     @Bindable
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
     @Bindable
-    public String getValue(){
+    public String getValue() {
         return this.value;
     }
 
+    @Bindable
+    public String getRefreshValue() {
+        return this.refreshValue;
+    }
 }

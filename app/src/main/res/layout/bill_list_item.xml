@@ -23,7 +23,7 @@
             android:id="@+id/budget_name" />
 
         <TextView
-            android:text="@{bill.value}"
+            android:text="@{bill.value + ' ' +'(' + bill.refreshValue +')'}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/budget_name"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/button"
+            android:id="@+id/bill_pay_bill"
             android:layout_width="50dp"
             style="@android:style/Widget.Material.Button.Borderless.Small"
             />

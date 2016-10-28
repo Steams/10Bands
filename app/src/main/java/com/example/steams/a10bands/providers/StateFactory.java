@@ -67,8 +67,10 @@ public class StateFactory {
 
 
     private StateFactory(){
+//        Realm.deleteRealm(Realm.getDefaultInstance().getConfiguration());
         realm = Realm.getDefaultInstance();
 //        clearDB();
+
         RealmResults<BudgetState> budgetStates = realm.where(BudgetState.class).findAll();
         for(BudgetState b : budgetStates){
             budgets.put(b.name,b.toBudget());
@@ -162,7 +164,7 @@ public class StateFactory {
         fundsStatusViewModel.setFree(buckets.get("Free Funds").value);
         fundsStatusViewModel.setSavings(buckets.get("Savings").value);
 
-        //available = all budgets and buckets and goals combined
+        //available = all budgets and buckets and goals combined minus unpaid bills
         double available = 0;
 
         for (Budget x : budgets.values()){
@@ -235,11 +237,16 @@ public class StateFactory {
                 state.name = bill.name;
                 state.value = bill.value;
                 state.isPaid = bill.isPaid;
+                state.refreshValue = bill.refreshValue;
 
             realm.commitTransaction();
 
             bills.put(bill.name,state.toBill());
             billsViewModels.add( new BillsListItemViewModel(bill));
+
+            Bucket free = buckets.get("Free Funds");
+            free.withdraw(bill.value);
+            updateBucketState(free);
         }
     }
 
@@ -322,6 +329,7 @@ public class StateFactory {
             state.value = t.value;
             state.description = t.description;
             state.source = t.source;
+            state.date = t.date;
         realm.commitTransaction();
     }
 
@@ -398,6 +406,34 @@ public class StateFactory {
         return true;
     }
 
+    public boolean setModelValue(String modelName, double amount) {
+        String modelClass = expendituresToClass.get(modelName);
+
+        Expense modelInstance = null;
+
+        switch (modelClass){
+            case "Bucket":
+                modelInstance = buckets.get(modelName);
+                break;
+            case "Budget":
+                modelInstance = budgets.get(modelName);
+                break;
+            case "Bill":
+                modelInstance = bills.get(modelName);
+                break;
+            case "Goal":
+                modelInstance = goals.get(modelName);
+                break;
+        }
+
+        modelInstance.value = amount;
+
+        updateExpense(modelInstance,modelClass);
+        updateFundsStatus();
+
+        return true;
+    }
+
     public void updateExpense(Expense x, String type){
         switch (type){
             case "Bucket":
@@ -419,11 +455,31 @@ public class StateFactory {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.delete(BudgetState.class);
-                realm.close();
                 realm.deleteAll();
-                realm.deleteRealm(realm.getConfiguration());
             }
         });
+
+        realm.close();
+        realm.deleteRealm(realm.getConfiguration());
+    }
+
+    public void payBill(String billName){
+        Bill bill = bills.get(billName);
+        Transaction t = bill.pay();
+
+        transactionList.add(t);
+        transactionsViewModels.add(new TransactionsListItemViewModel(t));
+
+        realm.beginTransaction();
+            TransactionState state = realm.createObject(TransactionState.class);
+            state.description = t.description;
+            state.value = t.value;
+            state.source = t.source;
+            state.category = t.category;
+            state.date = t.date;
+        realm.commitTransaction();
+
+        updateBillState(bill);
+        updateFundsStatus();
     }
 }

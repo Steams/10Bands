@@ -39,4 +39,10 @@
         app:showAsAction="ifRoom"
         />
 
+      <item
+          android:id="@+id/menu_set_value"
+          android:title="Set model value"
+          app:showAsAction="ifRoom"
+      />
+
 </menu>

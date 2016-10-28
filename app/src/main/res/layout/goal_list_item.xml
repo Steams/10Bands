@@ -23,7 +23,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/budget_name" />
 
     <TextView
-        android:text="@{goal.value}"
+        android:text="@{goal.value + ' ' +'/' + ' ' + goal.target}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/budget_name"

@@ -1,5 +1,6 @@
 package com.example.steams.a10bands.components.bills.models;
 
+import com.example.steams.a10bands.components.transactions.Transaction;
 import com.example.steams.a10bands.models.Expense;
 
 import io.realm.RealmObject;
@@ -15,8 +16,9 @@ public class Bill extends Expense {
     BillState state;
 
     public Bill(String name, double refreshValue ){
-        super(name);
+        super(name,refreshValue);
         this.refreshValue = refreshValue;
+        isPaid = false;
     }
 
     public Bill(BillState state){
@@ -36,4 +38,11 @@ public class Bill extends Expense {
         state.update(this);
     }
 
+    public Transaction pay(){
+        this.isPaid = true;
+        Transaction t =  new Transaction("Bill Payment",name,value,"");
+        this.value = 0;
+
+        return t;
+    }
 }
