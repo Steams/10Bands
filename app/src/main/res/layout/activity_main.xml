@@ -3,7 +3,7 @@
     <data>
         <variable
             name="FundsStatusVM"
-            type="com.example.steams.a10bands.viewModels.FundsStatusViewModel">
+            type="com.example.steams.a10bands.ui.mainActivity.viewModels.FundsStatusViewModel">
         </variable>
     </data>
 
@@ -16,7 +16,7 @@
         >
 
         <ScrollView
-            tools:context="com.example.steams.a10bands.MainActivity"
+            tools:context="com.example.steams.a10bands.ui.mainActivity.MainActivity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">

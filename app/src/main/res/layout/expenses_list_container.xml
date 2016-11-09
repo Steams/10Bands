@@ -33,7 +33,7 @@
             style="@android:style/Widget.Material.Button.Borderless.Small" />
         </LinearLayout>
 
-    <com.example.steams.a10bands.utils.ExpandingListView
+    <com.example.steams.a10bands.ui.common.ExpandingListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"

@@ -4,25 +4,25 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.util.Log;
 
-import com.example.steams.a10bands.components.bills.models.Bill;
-import com.example.steams.a10bands.components.bills.models.BillState;
-import com.example.steams.a10bands.components.buckets.Bucket;
-import com.example.steams.a10bands.components.buckets.BucketState;
-import com.example.steams.a10bands.components.budgets.models.Budget;
-import com.example.steams.a10bands.components.budgets.models.BudgetState;
-import com.example.steams.a10bands.components.goals.models.GoalState;
-import com.example.steams.a10bands.components.transactions.Transaction;
-import com.example.steams.a10bands.components.transactions.TransactionState;
-import com.example.steams.a10bands.components.transactions.viewModels.TransactionsListItemViewModel;
-import com.example.steams.a10bands.models.Expense;
-import com.example.steams.a10bands.models.FundsStatus;
-import com.example.steams.a10bands.components.goals.models.Goal;
-import com.example.steams.a10bands.models.IncomeModel;
-import com.example.steams.a10bands.components.bills.viewModels.BillsListItemViewModel;
-import com.example.steams.a10bands.components.buckets.viewModels.BucketListItemViewModel;
-import com.example.steams.a10bands.components.budgets.viewModels.BudgetListItemViewModel;
-import com.example.steams.a10bands.viewModels.FundsStatusViewModel;
-import com.example.steams.a10bands.components.goals.viewModels.GoalsListItemViewModel;
+import com.example.steams.a10bands.data.models.bills.Bill;
+import com.example.steams.a10bands.data.models.bills.BillState;
+import com.example.steams.a10bands.data.models.buckets.Bucket;
+import com.example.steams.a10bands.data.models.buckets.BucketState;
+import com.example.steams.a10bands.data.models.budgets.Budget;
+import com.example.steams.a10bands.data.models.budgets.BudgetState;
+import com.example.steams.a10bands.data.models.goals.GoalState;
+import com.example.steams.a10bands.data.models.transactions.Transaction;
+import com.example.steams.a10bands.data.models.transactions.TransactionState;
+import com.example.steams.a10bands.ui.transactionsActivity.viewModels.TransactionsListItemViewModel;
+import com.example.steams.a10bands.data.models.Expense;
+import com.example.steams.a10bands.data.models.FundsStatus;
+import com.example.steams.a10bands.data.models.goals.Goal;
+import com.example.steams.a10bands.data.models.IncomeModel;
+import com.example.steams.a10bands.ui.mainActivity.viewModels.BillsListItemViewModel;
+import com.example.steams.a10bands.ui.mainActivity.viewModels.BucketListItemViewModel;
+import com.example.steams.a10bands.ui.mainActivity.viewModels.BudgetListItemViewModel;
+import com.example.steams.a10bands.ui.mainActivity.viewModels.FundsStatusViewModel;
+import com.example.steams.a10bands.ui.mainActivity.viewModels.GoalsListItemViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,29 +42,26 @@ public class StateFactory {
 
     public Realm realm;
 
-    private double currentFunds = 0;
-    private double income = 0;
+    private IncomeModel incomeModel = new IncomeModel("SMS Salary",180000.0);
 
     private FundsStatus fundsStatus = new FundsStatus();
-    public FundsStatusViewModel fundsStatusViewModel = new FundsStatusViewModel();
 
-    private IncomeModel incomeModel = new IncomeModel("SMS Salary",180000.0);
 
     private Map<String,Budget> budgets = new HashMap<>();
     private Map<String,Bucket> buckets = new HashMap<>();
     private Map<String,Goal> goals = new HashMap<>();
     private Map<String,Bill> bills = new HashMap<>();
+    private List<Transaction> transactionList = new ArrayList<>();
+
+    public FundsStatusViewModel fundsStatusViewModel = new FundsStatusViewModel();
 
     public ObservableList<BudgetListItemViewModel> budgetViewModels = new ObservableArrayList<>();
     public ObservableList<BucketListItemViewModel> bucketViewModels = new ObservableArrayList<>();
     public ObservableList<GoalsListItemViewModel> goalsViewModels = new ObservableArrayList<>();
     public ObservableList<BillsListItemViewModel> billsViewModels = new ObservableArrayList<>();
-
-    private List<Transaction> transactionList = new ArrayList<>();
     public ObservableList<TransactionsListItemViewModel> transactionsViewModels = new ObservableArrayList<>();
 
     private Map<String,String> expendituresToClass = new HashMap<>();
-
 
     private StateFactory(){
 //        Realm.deleteRealm(Realm.getDefaultInstance().getConfiguration());
@@ -154,10 +151,6 @@ public class StateFactory {
         updateBucketState(buckets.get("Free Funds"));
 
         updateFundsStatus();
-    }
-
-    public FundsStatus getFundsStatus(){
-        return fundsStatus;
     }
 
     public void updateFundsStatus(){

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <data>
-        <variable name="bucket" type="com.example.steams.a10bands.components.buckets.viewModels.BucketListItemViewModel"></variable>
+        <variable name="bucket" type="com.example.steams.a10bands.ui.mainActivity.viewModels.BucketListItemViewModel"></variable>
     </data>
 
     <RelativeLayout

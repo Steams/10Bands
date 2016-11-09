@@ -5,7 +5,7 @@
     >
 
     <data>
-        <variable name="FundsStatusVM" type="com.example.steams.a10bands.viewModels.FundsStatusViewModel"></variable>
+        <variable name="FundsStatusVM" type="com.example.steams.a10bands.ui.mainActivity.viewModels.FundsStatusViewModel"></variable>
     </data>
     <android.support.v7.widget.CardView
         android:id="@+id/status_container"
