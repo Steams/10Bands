@@ -244,13 +244,13 @@ public class StateFactory {
     }
 
     public void addGoal(Goal goal){
-        if(goals.get(goal.name) ==null){
+        if(goals.get(goal.name) == null){
 
             realm.beginTransaction();
 
                 GoalState state = realm.createObject(GoalState.class);
                 state.name = goal.name;
-                state.value = goal.value;
+                state.target = goal.target;
 
             realm.commitTransaction();
 

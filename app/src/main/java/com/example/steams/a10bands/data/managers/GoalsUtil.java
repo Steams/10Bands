@@ -60,8 +60,8 @@ public class GoalsUtil {
                         stateFactory.addGoal(
                                 new Goal(
                                         name.getText().toString().trim(),
-                                        Double.parseDouble(value.getText().toString().trim()
-                                        )));
+                                        Double.parseDouble(value.getText().toString().trim())
+                                         ));
                     }
                 });
 
