@@ -170,13 +170,14 @@ public class StateFactory {
             }
         }
 
-        for (Goal x : goals.values()){
-            available += x.value;
-        }
+        //Goals should subract from available but not balance
+        // for (Goal x : goals.values()){
+        //     available += x.value;
+        // }
 
         fundsStatusViewModel.setAvailable(available);
 
-        //balance = avaialable + value of all unpaid bills
+        //balance = avaialable + value of all unpaid bills + goals values
         double balance = 0;
 
         for (Bill x : bills.values()){
@@ -184,6 +185,11 @@ public class StateFactory {
                 balance += x.value;
             }
         }
+
+        for (Goal x : goals.values()){
+            balance += x.value;
+        }
+
         balance += available;
 
         fundsStatusViewModel.setBalance(balance);
